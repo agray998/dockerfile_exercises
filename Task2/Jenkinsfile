@@ -4,7 +4,7 @@ pipeline {
         DOCKERHUB_CREDS = credentials('dockerhub')
         DB_PASSWORD = credentials('dbpass')
         VERSION = "v1"
-        OLD_VERSION "v1"
+        OLD_VERSION = "v1"
     }
     stages {
         stage ('Build Images') {
