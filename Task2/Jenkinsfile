@@ -39,7 +39,7 @@ pipeline {
                 --mount type=bind,source=\$(pwd)/Task2/nginx/nginx.conf,target=/etc/nginx/nginx.conf \
                 --name nginx \
                 -p 80:80 \
-                ${DOCKERHUB_CREDS_USR}/task2-db:${VERSION}
+                nginx:latest
                 '''
             }
         }
