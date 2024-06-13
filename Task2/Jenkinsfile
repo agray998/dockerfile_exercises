@@ -1,0 +1,33 @@
+pipeline {
+    agent any
+    environment {
+        OLD_VERSION = "v1"
+        VERSON = "v2"
+        DOCKERHUB_CREDS = credentials ('Dockerhubtoken')
+    }
+    stages {
+        stage('Build Images') {
+            steps {
+                sh "docker build -t ${DOCKERHUB_CREDS_USR}Task 2-flask-app:${VERSION} Task2"
+                sh "docker build -t ${DOCKERHUB_CREDS_USR}Task 2-nginx:${VERSION} -f Task2/Dockerfile.nginx Task2"
+            }
+        }
+        stage('Deploy Containers') {
+            steps {
+                sh "docker network create task2-net  || true"
+                sh "docker rm -f \$(docker ps -aq) || true"
+                sh "docker run -d --netwrok task2-net --name Task 2-flask-app -e YOUR_NAME=Jenkins ${DOCKERHUN_CREDS}Task 2-flask-app"
+                sh "docker run -d -p 80:80 --name nginx --network task2-net ${DOCKERHUB_CREDS_USR}/Task2/Dockerfile.nginx "
+            }
+        }
+      //  stage('Deploy') {
+      //      steps {
+    //            }
+    post {
+        always {
+            cleanWs()
+        }
+    }
+        }
+
+    
